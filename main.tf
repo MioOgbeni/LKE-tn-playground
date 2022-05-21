@@ -1,8 +1,16 @@
 terraform {
+    cloud {
+        organization = "mioogbeni"
+
+        workspaces {
+            name = "tn-playground"
+        }
+    }
+
     required_providers {
         linode = {
-        source = "linode/linode"
-        version = "1.27.2"
+            source = "linode/linode"
+            version = "1.27.2"
         }
     }
 }

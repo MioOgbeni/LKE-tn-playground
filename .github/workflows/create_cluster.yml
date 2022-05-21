@@ -1,0 +1,56 @@
+name: 'Create/Modify LKE Cluster'
+
+permissions:
+  contents: read
+
+on: 
+  workflow_dispatch:
+    inputs:
+      start_nodes_scale:
+        description: 'Initial number of running worker nodes'     
+        required: true
+        default: '3'
+      min_node_pool_scale:
+        description: 'Minimal number of running worker nodes'
+        required: true
+        default: '3'
+      max_node_pool_scale:
+        description: 'Maximum number of running worker nodes'
+        required: true
+        default: '6'
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2.4.2
+        with:
+          ref: 'main'
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.0
+        with:
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan
+        with:
+          args: |
+            -var start_nodes_scale="${{ github.event.inputs.start_nodes_scale }}" 
+            -var min_node_pool_scale="${{ github.event.inputs.min_node_pool_scale }}" 
+            -var max_node_pool_scale="${{ github.event.inputs.max_node_pool_scale }}" 
+        env:
+          LINODE_CLI_TOKEN: ${{ secrets.LINODE_CLI_TOKEN }}
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        with:
+          args: |
+            -var start_nodes_scale="${{ github.event.inputs.start_nodes_scale }}" 
+            -var min_node_pool_scale="${{ github.event.inputs.min_node_pool_scale }}" 
+            -var max_node_pool_scale="${{ github.event.inputs.max_node_pool_scale }}" 
+        env:
+          LINODE_CLI_TOKEN: ${{ secrets.LINODE_CLI_TOKEN }}

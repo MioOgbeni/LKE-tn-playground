@@ -1,0 +1,25 @@
+name: 'Destroy LKE Cluster'
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2.4.2
+        with:
+          ref: 'main'
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.0
+        with:
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Destroy
+        run: terraform destroy
+        env:
+          LINODE_CLI_TOKEN: ${{ secrets.LINODE_CLI_TOKEN }}
