@@ -51,6 +51,10 @@ jobs:
         id: fmt
         run: terraform fmt -check
 
+      - run: echo ${{ steps.fmt.outputs.stdout }}
+      - run: echo ${{ steps.fmt.outputs.stderr }}
+      - run: echo ${{ steps.fmt.outputs.exitcode }}
+
       - name: Terraform Init
         id: init
         run: terraform init
