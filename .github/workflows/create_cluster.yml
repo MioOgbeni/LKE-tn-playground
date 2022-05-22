@@ -40,6 +40,8 @@ jobs:
           max_node_pool_scale = "${{ github.event.inputs.max_node_pool_scale }}"
           EOF
 
+      - run: cat pipeline.auto.tfvars
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.0
         with:
