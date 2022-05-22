@@ -50,10 +50,16 @@ jobs:
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
+        continue-on-error: true
 
       - run: echo ${{ steps.fmt.outputs.stdout }}
       - run: echo ${{ steps.fmt.outputs.stderr }}
       - run: echo ${{ steps.fmt.outputs.exitcode }}
+
+      - name: Terraform Format Status
+        id: fmt_status
+        if: steps.fmt.outcome == 'failure'
+        run: exit 1
 
       - name: Terraform Init
         id: init
@@ -66,6 +72,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan
+        continue-on-error: true
 
       - run: echo ${{ steps.plan.outputs.stdout }}
       - run: echo ${{ steps.plan.outputs.stderr }}
@@ -79,6 +86,7 @@ jobs:
       - name: Terraform Apply
         id: apply
         run: terraform apply -auto-approve
+        continue-on-error: true
 
       - run: echo ${{ steps.apply.outputs.stdout }}
       - run: echo ${{ steps.apply.outputs.stderr }}
