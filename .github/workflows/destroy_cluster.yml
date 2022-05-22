@@ -16,7 +16,8 @@ jobs:
     name: 'Terraform'
     runs-on: ubuntu-latest
     env:
-      LINODE_CLI_TOKEN: ${{ secrets.LINODE_CLI_TOKEN }}
+      LINODE_TOKEN: ${{ secrets.LINODE_CLI_TOKEN }}
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3.0.0
