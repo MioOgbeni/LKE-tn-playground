@@ -3,23 +3,41 @@ name: 'Destroy LKE Cluster'
 permissions:
   contents: read
 
+on:
+  workflow_dispatch:
+    inputs:
+      reason_for_destroy:
+        description: 'Reason for destroy'
+        default: 'Cluster is no longer needed'
+        required: true
+
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
+    env:
+      LINODE_CLI_TOKEN: ${{ secrets.LINODE_CLI_TOKEN }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2.4.2
+        uses: actions/checkout@v3.0.0
         with:
           ref: 'main'
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.0
         with:
+          terraform_version: 1.2.0
           cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
+          terraform_wrapper: true
+
       - name: Terraform Init
+        id: init
         run: terraform init
 
       - name: Terraform Destroy
+        id: destroy
         run: terraform destroy
-        env:
-          LINODE_CLI_TOKEN: ${{ secrets.LINODE_CLI_TOKEN }}
+
+      - run: echo ${{ steps.destroy.outputs.stdout }}
+      - run: echo ${{ steps.destroy.outputs.stderr }}
+      - run: echo ${{ steps.destroy.outputs.exitcode }}
