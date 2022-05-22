@@ -37,7 +37,7 @@ jobs:
           cat > pipeline.auto.tfvars <<EOF
           start_nodes_scale = "${{ github.event.inputs.start_nodes_scale }}"
           min_node_pool_scale = "${{ github.event.inputs.min_node_pool_scale }}"
-          max_node_pool_scale="${{ github.event.inputs.max_node_pool_scale }}"
+          max_node_pool_scale = "${{ github.event.inputs.max_node_pool_scale }}"
           EOF
 
       - name: Setup Terraform
