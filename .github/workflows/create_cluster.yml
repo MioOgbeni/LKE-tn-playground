@@ -55,9 +55,9 @@ jobs:
         run: terraform fmt -check -diff -write=false
         continue-on-error: true
 
-      - run: echo ${{ steps.fmt.outputs.stdout }}
-      - run: echo ${{ steps.fmt.outputs.stderr }}
-      - run: echo ${{ steps.fmt.outputs.exitcode }}
+      - run: echo "${{ steps.fmt.outputs.stdout }}"
+      - run: echo "${{ steps.fmt.outputs.stderr }}"
+      - run: echo "${{ steps.fmt.outputs.exitcode }}"
 
       - name: Terraform Format Status
         id: fmt_status
@@ -77,9 +77,9 @@ jobs:
         run: terraform plan
         continue-on-error: true
 
-      - run: echo ${{ steps.plan.outputs.stdout }}
-      - run: echo ${{ steps.plan.outputs.stderr }}
-      - run: echo ${{ steps.plan.outputs.exitcode }}
+      - run: echo "${{ steps.plan.outputs.stdout }}"
+      - run: echo "${{ steps.plan.outputs.stderr }}"
+      - run: echo "${{ steps.plan.outputs.exitcode }}"
 
       - name: Terraform Plan Status
         id: plan_status
@@ -91,6 +91,6 @@ jobs:
         run: terraform apply -auto-approve
         continue-on-error: true
 
-      - run: echo ${{ steps.apply.outputs.stdout }}
-      - run: echo ${{ steps.apply.outputs.stderr }}
-      - run: echo ${{ steps.apply.outputs.exitcode }}
+      - run: echo "${{ steps.apply.outputs.stdout }}"
+      - run: echo "${{ steps.apply.outputs.stderr }}"
+      - run: echo "${{ steps.apply.outputs.exitcode }}"

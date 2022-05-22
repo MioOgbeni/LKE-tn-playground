@@ -39,6 +39,6 @@ jobs:
         id: destroy
         run: terraform destroy
 
-      - run: echo ${{ steps.destroy.outputs.stdout }}
-      - run: echo ${{ steps.destroy.outputs.stderr }}
-      - run: echo ${{ steps.destroy.outputs.exitcode }}
+      - run: echo "${{ steps.destroy.outputs.stdout }}"
+      - run: echo "${{ steps.destroy.outputs.stderr }}"
+      - run: echo "${{ steps.destroy.outputs.exitcode }}"
