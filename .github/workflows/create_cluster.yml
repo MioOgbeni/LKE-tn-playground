@@ -23,8 +23,7 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    env:
-      LINODE_CLI_TOKEN: ${{ secrets.LINODE_CLI_TOKEN }}
+    
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3.0.0
@@ -51,7 +50,7 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -check
+        run: terraform fmt -check -diff -write=false
         continue-on-error: true
 
       - run: echo ${{ steps.fmt.outputs.stdout }}
@@ -69,11 +68,13 @@ jobs:
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: terraform validate
 
       - name: Terraform Plan
         id: plan
         run: terraform plan
+        env:
+          LINODE_CLI_TOKEN: ${{ secrets.LINODE_CLI_TOKEN }}
         continue-on-error: true
 
       - run: echo ${{ steps.plan.outputs.stdout }}
@@ -88,6 +89,8 @@ jobs:
       - name: Terraform Apply
         id: apply
         run: terraform apply -auto-approve
+        env:
+          LINODE_CLI_TOKEN: ${{ secrets.LINODE_CLI_TOKEN }}
         continue-on-error: true
 
       - run: echo ${{ steps.apply.outputs.stdout }}
