@@ -39,9 +39,9 @@ jobs:
           start_nodes_scale   = "${{ github.event.inputs.start_nodes_scale }}"
           min_node_pool_scale = "${{ github.event.inputs.min_node_pool_scale }}"
           max_node_pool_scale = "${{ github.event.inputs.max_node_pool_scale }}"
+          cloudflare_api_token = ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare_zone_id_filter = ${{ secrets.CLOUDFLARE_ZONE_ID_FILTER }}
           EOF
-
-      - run: cat pipeline.auto.tfvars
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.0

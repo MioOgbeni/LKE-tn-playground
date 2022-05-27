@@ -1,0 +1,9 @@
+providers:
+  kubernetesIngress:
+    publishedService:
+      enabled: true
+
+ports:
+  websecure:
+    tls:
+      enabled: true
