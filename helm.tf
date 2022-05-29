@@ -1,5 +1,5 @@
 resource "helm_release" "external-dns" {
-  depends_on = [linode_lke_cluster.cluster]
+  depends_on = [kubernetes_namespace.default_namespaces]
 
   name             = "external-dns"
   chart            = "external-dns"
@@ -28,7 +28,7 @@ resource "helm_release" "external-dns" {
 }
 
 resource "helm_release" "traefik" {
-  depends_on = [linode_lke_cluster.cluster]
+  depends_on = [helm_release.external-dns]
 
   name             = "traefik"
   chart            = "traefik"
@@ -43,5 +43,24 @@ resource "helm_release" "traefik" {
 
   values = [
     "${file("app-values/traefik/values.yaml")}"
+  ]
+}
+
+resource "helm_release" "metrics-server" {
+  depends_on = [helm_release.traefik]
+
+  name             = "metrics-server"
+  chart            = "metrics-server"
+  repository       = "https://charts.bitnami.com/bitnami"
+  namespace        = "metrics-server"
+  version          = "6.0.4"
+  wait             = true
+  force_update     = true
+  recreate_pods    = true
+  create_namespace = false
+  max_history = 3
+
+  values = [
+    "${file("app-values/metrics-server/values.yaml")}"
   ]
 }

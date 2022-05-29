@@ -18,8 +18,14 @@ data "linode_lke_cluster" "cluster" {
   id = linode_lke_cluster.cluster.id
 }
 
-resource "kubernetes_namespace" "default_namespaces" {
+resource "time_sleep" "wait_60_seconds" {
   depends_on = [linode_lke_cluster.cluster]
+
+  create_duration = "60s"
+}
+
+resource "kubernetes_namespace" "default_namespaces" {
+  depends_on = [time_sleep.wait_60_seconds]
 
   for_each = var.default_namespaces
 
@@ -38,7 +44,7 @@ resource "kubernetes_namespace" "default_namespaces" {
 }
 
 resource "kubernetes_secret" "cloudflare_api_token" {
-  depends_on = [linode_lke_cluster.cluster]
+  depends_on = [kubernetes_namespace.default_namespaces]
 
   metadata {
     name = "cloudflare-api-token"

@@ -19,7 +19,7 @@ variable "max_node_pool_scale" {
 variable "default_namespaces" {
   description = "Default namespace to create"
   type        = set(string)
-  default     = ["external-dns", "traefik"]
+  default     = ["external-dns", "traefik", "metrics-server"]
 }
 
 variable "cloudflare_api_token" {
