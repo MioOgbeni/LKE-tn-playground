@@ -34,7 +34,7 @@ resource "helm_release" "traefik" {
   chart            = "traefik"
   repository       = "https://helm.traefik.io/traefik"
   namespace        = "traefik"
-  version          = "v10.20.0"
+  version          = "10.20.0"
   wait             = true
   force_update     = true
   recreate_pods    = true
